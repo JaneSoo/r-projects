@@ -3,6 +3,6 @@ This repository is for my R's projects aiming for assignments of course "Statist
 
 Programming Language: R
 
-Tool: Rstudio \n
+Tool: Rstudio
 
 Intergrate with knitr and latex distribution for document generating purpose.
