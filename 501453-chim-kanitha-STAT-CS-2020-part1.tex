@@ -272,7 +272,7 @@ library(xtable)
 \subsection*{Implementation in R}
 \begin{Schunk}
 \begin{Sinput}
-setwd('/home/jane/Documents/SSME (Service Development Management)/Term2/MV013-Statistics for Computer Science/Assignment1')
+setwd(getwd())
 Howell <- read.csv('Howell.csv')
 Howell.Male <- Howell[Howell$Sex == 'M', ]
 Howell.Male.Australi <- Howell.Male[(Howell.Male$Population == 'AUSTRALI'), ]
@@ -304,14 +304,34 @@ Peru.sample_decile_range <- cal_sample_decile_range(Howell.Male.Peru$XCB)
 Peru.sample_0.1_trimmed_average <- cal_sample_0.1_trimmed_average(Howell.Male.Peru$XCB)
 Peru.sample_0.1_trimmed_variance <- cal_sample_0.1_trimmed_variance(Howell.Male.Peru$XCB)
 
-Howell.characteristics <- data.frame(Australi=c(Australi.sample_size, Australi.sample_mean, Australi.sample_five_num_summary, Australi.sample_skewness, 
-                        Australi.sample_kurtosis, Australi.sample_variance, Australi.sample_sd, Australi.sample_range,
-                        Australi.sample_decile_range, Australi.sample_0.1_trimmed_average, Australi.sample_0.1_trimmed_variance),
-                  Peru=c(Peru.sample_size, Peru.sample_mean, Peru.sample_five_num_summary, Peru.sample_skewness,
-                        Peru.sample_kurtosis, Peru.sample_variance, Peru.sample_sd, Peru.sample_range,
-                        Peru.sample_decile_range, Peru.sample_0.1_trimmed_average, Peru.sample_0.1_trimmed_variance),
-                  row.names = c('Size', 'Mean', 'Minimum', 'Q1', 'Q2', 'Q3', 'Maximum', 'Skewness', 'Kurtosis', 'Variance',
-                        'Standard Deviation', 'Range', 'Decile Range', 'Sampe 0.1 trimmed average', 'Sample 0.1 trimmed variance'))
+Howell.characteristics <- data.frame(Australi=c(Australi.sample_size, 
+                        Australi.sample_mean, 
+                        Australi.sample_five_num_summary, 
+                        Australi.sample_skewness, 
+                        Australi.sample_kurtosis, 
+                        Australi.sample_variance, 
+                        Australi.sample_sd, 
+                        Australi.sample_range, 
+                        Australi.sample_decile_range, 
+                        Australi.sample_0.1_trimmed_average, 
+                        Australi.sample_0.1_trimmed_variance),
+                  Peru=c(Peru.sample_size, Peru.sample_mean, 
+                         Peru.sample_five_num_summary, 
+                         Peru.sample_skewness, 
+                         Peru.sample_kurtosis, 
+                         Peru.sample_variance, 
+                         Peru.sample_sd, 
+                         Peru.sample_range, 
+                         Peru.sample_decile_range, 
+                         Peru.sample_0.1_trimmed_average, 
+                         Peru.sample_0.1_trimmed_variance),
+                  row.names = c('Size', 'Mean', 'Minimum', 
+                                'Q1', 'Q2', 'Q3', 'Maximum', 
+                                'Skewness', 'Kurtosis', 
+                                'Variance', 'Standard Deviation', 
+                                'Range', 'Decile Range', 
+                                'Sampe 0.1 trimmed average', 
+                                'Sample 0.1 trimmed variance'))
 
 library(xtable)
 \end{Sinput}
@@ -325,6 +345,7 @@ library(xtable)
 max.len = max(length(Howell.Male.Australi$XCB), length(Howell.Male.Peru$XCB))
 x=c(Howell.Male.Australi$XCB, rep(NA, max.len - length(Howell.Male.Australi$XCB)))
 y=c(Howell.Male.Peru$XCB, rep(NA, max.len - length(Howell.Male.Peru$XCB)))
+
 Populations <- c('Australi', 'Peru')
 values <- c(x, y)
 df <- data.frame(Populations, values)
@@ -335,8 +356,10 @@ boxplot <- ggplot(df, aes(x=Populations, y=values, fill=Populations)) +
           scale_fill_manual(values=c("lightblue", "lightgreen")) +
           ylab('Maximum cranial breadth') +
           xlab('Populations') +
-          annotate("text", x=1, y=Australi.sample_mean, label= round(Australi.sample_mean, 4)) +
-          annotate("text", x=2, y=Peru.sample_mean, label= round(Peru.sample_mean, 4)) +
+          annotate("text", x=1, y=Australi.sample_mean, 
+                   label= round(Australi.sample_mean, 4)) +
+          annotate("text", x=2, y=Peru.sample_mean, 
+                   label= round(Peru.sample_mean, 4)) +
           ggtitle('Boxplot of maximum cranial breadth') +
           theme(plot.title = element_text(hjust = 0.5))
 \end{Sinput}
@@ -346,14 +369,16 @@ boxplot <- ggplot(df, aes(x=Populations, y=values, fill=Populations)) +
 \subsection*{Implementation in R}
 \begin{Schunk}
 \begin{Sinput}
-Australi.hist <- ggplot(data=data.frame(Australi=c(Howell.Male.Australi$XCB)), aes(x=Howell.Male.Australi$XCB)) + 
+Australi.hist <- ggplot(data=data.frame(Australi=c(Howell.Male.Australi$XCB)), 
+                        aes(x=Howell.Male.Australi$XCB)) + 
                 geom_histogram(color="darkblue", fill="lightblue", binwidth = 1) + 
                 xlab('Maximum cranial breadth of Australi') +
                 ylab('Frequecy') +
                 scale_x_continuous(breaks = seq(124, 144, 2), lim = c(122, 146)) + 
                 geom_text(stat = 'count', aes(label =..count.., vjust = -0.5))
 
-Peru.hist <- ggplot(data=data.frame(Peru=c(Howell.Male.Peru$XCB)), aes(x=Howell.Male.Peru$XCB)) + 
+Peru.hist <- ggplot(data=data.frame(Peru=c(Howell.Male.Peru$XCB)), 
+                    aes(x=Howell.Male.Peru$XCB)) + 
             geom_histogram(color="darkgreen", fill="lightgreen", binwidth = 1) + 
             xlab('Maximum cranial breadth of Peru') + 
             ylab('Frequency') +
@@ -392,7 +417,7 @@ Peru.qq <- ggplot(data=data.frame(Peru=c(Howell.Male.Peru$XCB))) +
 \end{center}
 Table represents the characteristics of maximum cranial breadth. The selected populations are male people from Austali and Peru.
 % latex table generated in R 3.6.3 by xtable 1.8-4 package
-% Sun Apr 12 17:10:19 2020
+% Mon Apr 13 17:38:16 2020
 \begin{table}[ht]
 \centering
 \begin{tabular}{|l|l|l|}
@@ -452,7 +477,7 @@ The left figure shows qq-plot represent maximum cranial breadth of Australi whil
 \subsection*{Implementation in R}
 \begin{Schunk}
 \begin{Sinput}
-setwd('/home/jane/Documents/SSME (Service Development Management)/Term2/MV013-Statistics for Computer Science/Assignment1')
+setwd(getwd())
 Spanish.province <- read.csv('area_spanish_provinces.csv')
 Spanish.population <- read.csv('population-spain-1998-2018.csv', sep=";")
 
@@ -464,13 +489,20 @@ population.1998 <- sum(Spanish.population$males.1998, Spanish.population$females
 
 total.population <- sum(colSums(Spanish.population[ ,-1]))
 
-population.df <- data.frame(Male=c(sum(Spanish.population$males.1998), sum(Spanish.population$males.2003), 
-                        sum(Spanish.population$males.2008), sum(Spanish.population$males.2013), 
-                        sum(Spanish.population$males.2018), 0),
-                 Female=c(sum(Spanish.population$females.1998), sum(Spanish.population$females.2003), 
-                          sum(Spanish.population$females.2008), sum(Spanish.population$females.2013), 
+population.df <- data.frame(Male=c(sum(Spanish.population$males.1998), 
+                                   sum(Spanish.population$males.2003), 
+                                   sum(Spanish.population$males.2008), 
+                                   sum(Spanish.population$males.2013), 
+                                   sum(Spanish.population$males.2018), 0),
+                 Female=c(sum(Spanish.population$females.1998), 
+                          sum(Spanish.population$females.2003), 
+                          sum(Spanish.population$females.2008), 
+                          sum(Spanish.population$females.2013), 
                           sum(Spanish.population$females.2018), 0),
-                 Total=c(population.1998, population.2003, population.2008, population.2013, population.2018, total.population))
+                 Total=c(population.1998, population.2003, 
+                         population.2008, population.2013, 
+                         population.2018, total.population))
+
 row.names(population.df) <- c('1998', '2003', '2008', '2013', '2018', 'Total')
 population.df[6,1] <- sum(population.df$Male)
 population.df[6,2] <- sum(population.df$Female)
@@ -496,15 +528,19 @@ population <- c(sum(Spanish.population$males.1998),
                 sum(Spanish.population$males.2018), 
                 sum(Spanish.population$females.2018))
 options(scipen = 999)
-gender <- c('Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Male', 'Female' )
+gender <- c('Male', 'Female', 'Male', 'Female', 'Male', 
+            'Female', 'Male', 'Female', 'Male', 'Female' )
+
 df.population <- data.frame(year, population, gender)
-population.barplot<-ggplot(data=df.population, aes(x=year, y=population, fill=gender )) +
-  geom_col() +
-  scale_fill_manual(values=c("lightpink", "lightblue")) +
-  scale_x_continuous(breaks = seq(1998, 2018, 5)) + 
-  scale_y_continuous(breaks = seq(0, 50000000, 5000000)) +
-  geom_text(aes(label = sprintf("%.0fk", population/1000)), position = position_stack(0.5)) +
-  theme(axis.text.y=element_text(angle = 45))
+population.barplot<-ggplot(data=df.population, 
+                           aes(x=year, y=population, fill=gender )) +
+                    geom_col() +
+                    scale_fill_manual(values=c("lightpink", "lightblue")) +
+                    scale_x_continuous(breaks = seq(1998, 2018, 5)) + 
+                    scale_y_continuous(breaks = seq(0, 50000000, 5000000)) +
+                    geom_text(aes(label = sprintf("%.0fk", population/1000)), 
+                              position = position_stack(0.5)) +
+                    theme(axis.text.y=element_text(angle = 45))
 \end{Sinput}
 \end{Schunk}
 
@@ -519,13 +555,18 @@ proportion.female <- round(Spanish.population$females.2018 / (Spanish.population
 
 proportion.province.gender <- c(proportion.male, proportion.female)
 
-df.proportion <- data.frame(Provinces=proportion.province, Proportion=proportion.province.gender, Gender=proportion.gender)
-proportion.barplot <- ggplot(data=df.proportion, aes(x=Provinces, y=Proportion, fill=Gender)) + 
-          geom_col() + 
-          theme(axis.text.x=element_text(angle = 90, size=6), plot.title = element_text(vjust=0.5, hjust=1)) +
-          scale_fill_manual(values=c("lightpink", "lightblue")) +
-          scale_x_discrete(name= "Provinces") +
-          scale_y_continuous(name= "Population proportion")
+df.proportion <- data.frame(Provinces=proportion.province, 
+                            Proportion=proportion.province.gender, 
+                            Gender=proportion.gender)
+
+proportion.barplot <- ggplot(data=df.proportion, 
+                             aes(x=Provinces, y=Proportion, fill=Gender)) + 
+                      geom_col() + 
+                      theme(axis.text.x=element_text(angle = 90, size=6), 
+                            plot.title = element_text(vjust=0.5, hjust=1)) +
+                      scale_fill_manual(values=c("lightpink", "lightblue")) +
+                      scale_x_discrete(name= "Provinces") +
+                      scale_y_continuous(name= "Population proportion")
 \end{Sinput}
 \end{Schunk}
 
@@ -536,7 +577,10 @@ proportion.barplot <- ggplot(data=df.proportion, aes(x=Provinces, y=Proportion, 
 province.population.2018 <- Spanish.population$males.2018 + Spanish.population$females.2018
 province.population.1998 <- Spanish.population$males.1998 + Spanish.population$females.1998
 provinces <- sapply(strsplit(as.vector(Spanish.population$province), ", "), '[', 1)
-df <- data.frame(province = provinces, population.1998 = province.population.1998, population.2018 =province.population.2018)
+
+df <- data.frame(province = provinces, 
+                 population.1998 = province.population.1998, 
+                 population.2018 =province.population.2018)
 
 area.provinces <- sapply(strsplit(as.vector(Spanish.province$Province)," "), tail, 1)
 df1 <- data.frame(province = area.provinces, area = Spanish.province$Area)
@@ -567,11 +611,21 @@ density.1998.sample_skewness <- cal_coef_skew(df$density.1998)
 density.1998.kurtosis <- cal_coef_kurt(df$density.1998)
 density.1998.sample_sd <- cal_sd(df$density.1998)
 
-density.characteristics <- data.frame("1998"=c(density.1998.sample_size, density.1998.sample_mean, density.1998.sample_five_num_summary, 
-                                              density.1998.sample_skewness, density.1998.kurtosis, density.1998.sample_sd),
-                                      "2018"=c(density.2018.sample_size, density.2018.sample_mean, density.2018.sample_five_num_summary, 
-                                              density.2018.sample_skewness, density.2018.kurtosis, density.2018.sample_sd),
-                                      row.names = c('Size', 'Mean', 'Minimum', 'Q1', 'Q2', 'Q3', 'Maximum', 'Skewness', 'Kurtosis', 'Standard Deviation'))
+density.characteristics <- data.frame("1998"=c(density.1998.sample_size, 
+                                               density.1998.sample_mean, 
+                                               density.1998.sample_five_num_summary, 
+                                               density.1998.sample_skewness, 
+                                               density.1998.kurtosis, 
+                                               density.1998.sample_sd),
+                                      "2018"=c(density.2018.sample_size, 
+                                               density.2018.sample_mean, 
+                                               density.2018.sample_five_num_summary, 
+                                               density.2018.sample_skewness, 
+                                               density.2018.kurtosis, 
+                                               density.2018.sample_sd),
+                                      row.names = c('Size', 'Mean', 'Minimum', 
+                                                    'Q1', 'Q2', 'Q3', 'Maximum', 
+                                                    'Skewness', 'Kurtosis', 'Standard Deviation'))
 
 colnames(density.characteristics) <- c("Year 1998", "Year 2018")
 
@@ -582,27 +636,33 @@ values <- c(df$density.1998, df$density.2018)
 density.df <- data.frame(year, values)
 
 density.boxplot <- ggplot(density.df, aes(x=year, y=values, fill=year)) +
-          geom_boxplot(notch = TRUE) +
-          scale_fill_manual(values=c("lightblue", "lightgreen")) +
-          ylab('Population density') +
-          xlab('Year') +
-          ggtitle('Boxplot of population density in Spain') +
-          theme(plot.title = element_text(hjust = 0.5))
-density.boxplot
-\end{Sinput}
+                  geom_boxplot(notch = TRUE) +
+                  scale_fill_manual(values=c("lightblue", "lightgreen")) +
+                  ylab('Population density') +
+                  xlab('Year') +
+                  ggtitle('Boxplot of population density in Spain') +
+                  theme(plot.title = element_text(hjust = 0.5))
 
-\includegraphics[width=\maxwidth]{figure/unnamed-chunk-13-1} \begin{Sinput}
-hist.1998 <- ggplot(data=data.frame('1998'=c(df$density.1998)), aes(x=df$density.1998)) + 
+hist.1998 <- ggplot(data=df, aes(x=density.1998)) + 
                 geom_histogram(color="darkblue", fill="lightblue", binwidth = 50) + 
                 xlab('Population density in 1998') +
                 ylab('Frequecy') +
                 scale_x_continuous(breaks = seq(0, 5000, 500))
 
-hist.2018 <- ggplot(data=data.frame('2018'=c(df$density.2018)), aes(x=df$density.2018)) + 
-                geom_histogram(color="darkgreen", fill="lightgreen", binwidth = 40) + 
+hist.2018 <- ggplot(data=df, aes(x=density.2018)) + 
+                geom_histogram(color="darkgreen", fill="lightgreen", binwidth = 50) + 
                 xlab('Population density in 2018') +
                 ylab('Frequecy') +
-                scale_x_continuous(breaks = seq(0, 7000, 1000))
+                scale_x_continuous(breaks = seq(0, 7000, 500))
+
+histogram.group <- ggplot(density.df, aes(x = values)) +
+              geom_histogram(aes(color = year, fill = year), 
+                            position = "identity", bins = 30, alpha = 0.4, binwidth = 50) +
+              scale_color_manual(values = c("#00AFBB", "#E7B800")) +
+              scale_fill_manual(values = c("#00AFBB", "#ffffff00")) +
+              scale_x_continuous(breaks = seq(0, 7000, 500)) +
+              xlab('Population density') +
+              ylab('Frequecy')
 \end{Sinput}
 \end{Schunk}
 
@@ -615,7 +675,7 @@ hist.2018 <- ggplot(data=data.frame('2018'=c(df$density.2018)), aes(x=df$density
 Table represents the population of Spain in 1998, 2003, 2008, 2013 and 2018. It shows the total population based on gender between each year, the total population between each year, and the total population of the 5 selected year.
 
 % latex table generated in R 3.6.3 by xtable 1.8-4 package
-% Sun Apr 12 17:10:21 2020
+% Mon Apr 13 17:38:18 2020
 \begin{table}[ht]
 \centering
 \begingroup\large
@@ -660,7 +720,7 @@ Barplot represents population proportion of each province in Spain in 2018. X-ax
 \end{center}
 
 % latex table generated in R 3.6.3 by xtable 1.8-4 package
-% Sun Apr 12 17:10:22 2020
+% Mon Apr 13 17:38:19 2020
 \begin{table}[ht]
 \centering
 \begin{tabular}{|l|l|l|}
@@ -696,12 +756,21 @@ Size &   52.0000 &   52.0000 \\
 \begin{center}
 \textbf {Histograms represent population density in Spain} \\
 \end{center}
-Histograms show population density in Spain in 1998 and 2018. The x-axis shows population density while the y-axis shows frequency.\\
+First two histograms show population density in Spain in 1998 and 2018. The x-axis shows population density while the y-axis shows frequency. The last histogram shows the joining of population density in Spain in 1998 and 2018.\\
 
 \begin{Schunk}
 
 
-{\centering \includegraphics[width=9cm,height=9cm]{figure/unnamed-chunk-19-1} \includegraphics[width=9cm,height=9cm]{figure/unnamed-chunk-19-2} 
+{\centering \includegraphics[width=8cm,height=8cm]{figure/unnamed-chunk-19-1} \includegraphics[width=8cm,height=8cm]{figure/unnamed-chunk-19-2} 
+
+}
+
+\end{Schunk}
+
+\begin{Schunk}
+
+
+{\centering \includegraphics[width=16cm,height=12cm]{figure/unnamed-chunk-20-1} 
 
 }
 
